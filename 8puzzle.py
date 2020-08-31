@@ -52,23 +52,27 @@ class EightPuzzle():
             res += '\r\n'
         return res
 
+def initTiles(puzzle):
+    # print("Starting State: ")
+    # print(puzzle)
+    iterations = random.randint(0, 30)
+    print("Number of Iterations: " + str(iterations))
+    
+    for itr in range(iterations):
+        moves = puzzle.neighbors()
+        rand_index = random.randint(0, len(moves)-1)
+        rand_move = moves[rand_index][0]
+        # print(rand_move)
+    
+        puzzle.state = rand_move.state
+    # print("Randomly Generated State: ")
+    # print(puzzle)
+    return puzzle
+
 if __name__ == '__main__':
    puzzle = EightPuzzle()
-   print(puzzle.blank_index)
+   initState = initTiles(puzzle)
+   print(initState)
    
-   print("Starting State: ")
-   print(puzzle)
-   
-   iterations = random.randint(0, 30)
-   print("Number of Iterations: ", iterations)
 
-   for itr in range(iterations):
-       moves = puzzle.neighbors()
-       rand_index = random.randint(0, len(moves)-1)
-       rand_move = moves[rand_index][0]
-       print(rand_move)
-       
-   puzzle.state = rand_move.state
-   print("Randomly Generated State: ")
-   print(puzzle)
     
