@@ -3,13 +3,20 @@ import copy
 import math
 import random
 
-TILECOUNT = 3
+# TILECOUNT = 3
+'''
+Class creates sliding 8 puzzle with initial state formed by reverse walking
+legal slides from a valid arrangement.
+'''
 class EightPuzzle():
     def __init__(self):
-        #self.state = [[[0], [1], [2]], [[3], [4], [5]], [[6], [7], [8]]]
-        self.state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
+        self.state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]] # legal arrangement to begin reversing
         self.blank_index = self.get_blank_index()
 
+    '''
+    Class function that returns a tuple of the current x,y position of the blank
+    tile in the puzzle state.
+    '''
     def get_blank_index(self):
         for i in range(0, 3):
             for j in range(0, 3):
@@ -18,6 +25,10 @@ class EightPuzzle():
                     y = i
         return (x,y)
 
+    '''
+    Class function that returns a list of all possible slide moves based on the current
+    position of the blank tile.
+    '''
     def neighbors(self):
         list = []
         blank = self.get_blank_index()
@@ -45,6 +56,10 @@ class EightPuzzle():
             list.append((u,'u')) # add this move and board state to list
         return list
 
+    '''
+    Class function that returns a representation of the current state of the
+    sliding 8 puzzle.
+    '''
     def __repr__(self):
         res = ''
         for row in range(3):
@@ -52,11 +67,15 @@ class EightPuzzle():
             res += '\r\n'
         return res
 
+'''
+Function that uses a randomized number of iterations to return the initial
+state of the 8 puzzle based on legal moves from the neighbors list.
+'''
 def initTiles(puzzle):
     # print("Starting State: ")
     # print(puzzle)
     iterations = random.randint(0, 30)
-    print("Number of Iterations: " + str(iterations))
+    # print("Number of Iterations: " + str(iterations))
     
     for itr in range(iterations):
         moves = puzzle.neighbors()
