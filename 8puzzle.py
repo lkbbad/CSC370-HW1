@@ -55,28 +55,20 @@ class EightPuzzle():
 if __name__ == '__main__':
    puzzle = EightPuzzle()
    print(puzzle.blank_index)
-#   #print(neighbors[0])
-#    for i in range(0,3):
-#        for j in range(0,3):
-#             if puzzle[i][j] == 0:
-#                 x = j
-#                 y = i
-#     print((x,y))
-    
-print("Starting State: ")
-print(puzzle)
+   
+   print("Starting State: ")
+   print(puzzle)
+   
+   iterations = random.randint(0, 30)
+   print("Number of Iterations: ", iterations)
 
-iterations = random.randint(0, 30)
-print("Number of Iterations: ", iterations)
-
-for itr in range(iterations):
-    moves = puzzle.neighbors()
-    rand_index = random.randint(0, len(moves)-1)
-    rand_move = moves[rand_index][0]
-    print(rand_move)
-    
-    puzzle.state = rand_move.state
-
-print("Randomly Generated State: ")
-print(puzzle)
+   for itr in range(iterations):
+       moves = puzzle.neighbors()
+       rand_index = random.randint(0, len(moves)-1)
+       rand_move = moves[rand_index][0]
+       print(rand_move)
+       
+   puzzle.state = rand_move.state
+   print("Randomly Generated State: ")
+   print(puzzle)
     
