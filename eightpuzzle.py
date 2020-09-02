@@ -3,6 +3,7 @@ import copy
 import math
 import random
 
+
 # TILECOUNT = 3
 '''
 Class creates sliding 8 puzzle with initial state formed by reverse walking
@@ -12,6 +13,18 @@ class EightPuzzle():
     def __init__(self):
         self.state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]] # legal arrangement to begin reversing
         self.blank_index = self.get_blank_index()
+        self.g = 0
+        self.h = 0
+    def __cmp__(self,other):
+        if self.value < other.value:
+            return -1
+        elif self.value > other.value:
+            return 1
+        else:
+            return 0
+    
+    def __lt__(self, other):
+        return self.state < other.state
 
     '''
     Class function that returns a tuple of the current x,y position of the blank
@@ -38,21 +51,25 @@ class EightPuzzle():
             r = copy.deepcopy(self) # make a copy of state
             r.state[y][x] = r.state[y][x-1] # move right the tile to the left of space
             r.state[y][x-1] = 0
+            r.g = self.g + 1
             list.append((r,'r')) # add this move and board state to list
         if x < 2:
             l = copy.deepcopy(self) # make a copy of state
             l.state[y][x] = l.state[y][x+1] # move left the tile to the right of space
             l.state[y][x+1] = 0
+            l.g = self.g + 1
             list.append((l,'l')) # add this move and board state to list
         if y > 0:
             d = copy.deepcopy(self) # make a copy of state
             d.state[y][x] = d.state[y-1][x] # move tile above space down
-            d.state[y-1][x] = 0 
+            d.state[y-1][x] = 0
+            d.g = self.g + 1
             list.append((d,'d')) # add this move and board state to list
         if y < 2:
             u = copy.deepcopy(self) # make a copy of state
             u.state[y][x] = u.state[y+1][x] # move tile below space up
             u.state[y+1][x] = 0
+            u.g = self.g + 1
             list.append((u,'u')) # add this move and board state to list
         return list
 
@@ -93,5 +110,3 @@ if __name__ == '__main__':
    initState = initTiles(puzzle)
    print(initState)
    
-
-    
