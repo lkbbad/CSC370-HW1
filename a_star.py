@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import csv
 import pandas
 
+NUMBER_OF_TRIALS = 25
 goal_state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
 
 def h1(curr_state,prev_state, goal_state):
@@ -24,7 +25,6 @@ def h1(curr_state,prev_state, goal_state):
     # print("prev-curr", prev_state.h - curr_state.h)
     # print("curr state g", curr_state.g)
     if (not(prev_state.h - curr_state.h <= curr_state.g)):
-        print("here!")
         curr_state.h = prev_state.h - curr_state.g
         h1 = prev_state.h - curr_state.g
             
@@ -64,7 +64,9 @@ if __name__ == '__main__':
     h2_nodes = []
     h1_depth = []
     h2_depth = []
-    for x in range(100):
+    h1_branching = []
+    h2_branching = []
+    for x in range(NUMBER_OF_TRIALS):
         puzzle = eightpuzzle.EightPuzzle()
         initState = eightpuzzle.initTiles(puzzle)
         # print(initState.state)
@@ -124,29 +126,35 @@ if __name__ == '__main__':
                 for moves in neighbors:
                     frontier.put((heuristic(moves[0], prev_node, goal) + moves[0].g, moves[0]))
                 
-            if (empty):
-                print("No possible solutions using", heuristic, "as the heuristic.")
+            # if (empty):
+                # print("No possible solutions using", heuristic, "as the heuristic.")
             
             if (goal_found):
-                print("Found a solution using ", heuristic, "as the heuristic!")
-                print("-----------------")
-                print("Nodes visited: ", nodes_visited)
-                print(heuristic)
+                # print("Found a solution using ", heuristic, "as the heuristic!")
+                # print("-----------------")
+                # print("Nodes visited: ", nodes_visited)
+                # print(heuristic)
                 if h == 1:
                     h1_nodes.append(nodes_visited)
+                    h1_depth.append(next_node.g)
+                    if next_node.g != 0:
+                        h1_branching.append(nodes_visited / next_node.g)
+                    else:
+                        h1_branching.append(0)
                 else:
                     h2_nodes.append(nodes_visited)
-                print("Depth: ", next_node.g)
-                print("-----------------")
-                if h == 1:
-                    h1_depth.append(next_node.g)
-                else:
                     h2_depth.append(next_node.g)
-  
+                    if next_node.g != 0:
+                        h2_branching.append(nodes_visited / next_node.g)
+                    else:
+                        h2_branching.append(0)
+                # print("Depth: ", next_node.g)
+                # print("-----------------")
+    
 
-    df = pandas.DataFrame(data={"h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes})
+    df = pandas.DataFrame(data={"h1 branching factor" : h1_branching, "h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 branching factor" : h2_branching, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes})
     df.to_csv("./file.csv", sep=',',index=False)
 
-    plt.plot(h1_depth, h1_nodes, 'r^', h2_depth, h2_nodes, 'bs')
-    plt.show()
+    # plt.plot(h1_depth, h1_nodes, 'r^', h2_depth, h2_nodes, 'bs')
+    # plt.show()
 
