@@ -4,7 +4,7 @@ import math
 import random
 
 
-# TILECOUNT = 3
+RANDOMIZATION_NUMBER = 50
 '''
 Class creates sliding 8 puzzle with initial state formed by reverse walking
 legal slides from a valid arrangement.
@@ -43,7 +43,7 @@ class EightPuzzle():
     position of the blank tile.
     '''
     def neighbors(self):
-        list = []
+        nodes = []
         blank = self.get_blank_index()
         x = blank[0]
         y = blank[1]
@@ -52,26 +52,26 @@ class EightPuzzle():
             r.state[y][x] = r.state[y][x-1] # move right the tile to the left of space
             r.state[y][x-1] = 0
             r.g = self.g + 1
-            list.append((r,'r')) # add this move and board state to list
+            nodes.append((r,'r')) # add this move and board state to list
         if x < 2:
             l = copy.deepcopy(self) # make a copy of state
             l.state[y][x] = l.state[y][x+1] # move left the tile to the right of space
             l.state[y][x+1] = 0
             l.g = self.g + 1
-            list.append((l,'l')) # add this move and board state to list
+            nodes.append((l,'l')) # add this move and board state to list
         if y > 0:
             d = copy.deepcopy(self) # make a copy of state
             d.state[y][x] = d.state[y-1][x] # move tile above space down
             d.state[y-1][x] = 0
             d.g = self.g + 1
-            list.append((d,'d')) # add this move and board state to list
+            nodes.append((d,'d')) # add this move and board state to list
         if y < 2:
             u = copy.deepcopy(self) # make a copy of state
             u.state[y][x] = u.state[y+1][x] # move tile below space up
             u.state[y+1][x] = 0
             u.g = self.g + 1
-            list.append((u,'u')) # add this move and board state to list
-        return list
+            nodes.append((u,'u')) # add this move and board state to list
+        return nodes
 
     '''
     Class function that returns a representation of the current state of the
@@ -91,7 +91,7 @@ state of the 8 puzzle based on legal moves from the neighbors list.
 def initTiles(puzzle):
     # print("Starting State: ")
     # print(puzzle)
-    iterations = random.randint(0, 30)
+    iterations = random.randint(0, RANDOMIZATION_NUMBER)
     # print("Number of Iterations: " + str(iterations))
     
     for itr in range(iterations):

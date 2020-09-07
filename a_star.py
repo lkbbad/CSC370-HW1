@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import csv
 import pandas
 
-NUMBER_OF_TRIALS = 25
+NUMBER_OF_TRIALS = 50
 goal_state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
 
 def h1(curr_state,prev_state, goal_state):
@@ -19,14 +19,6 @@ def h1(curr_state,prev_state, goal_state):
                 h1 += 1
     
     curr_state.h = h1
-    
-    #making sure heuristic is consistent
-    #never enters this??
-    # print("prev-curr", prev_state.h - curr_state.h)
-    # print("curr state g", curr_state.g)
-    if (not(prev_state.h - curr_state.h <= curr_state.g)):
-        curr_state.h = prev_state.h - curr_state.g
-        h1 = prev_state.h - curr_state.g
             
     return h1
 
@@ -49,14 +41,7 @@ def h2(curr_state,prev_state, goal_state):
             h2 += manhattan_distance
         
     curr_state.h = h2
-    
-    #making sure heuristic is consistent
-    #never enters this??
-    # print("prev-curr", prev_state.h - curr_state.h)
-    # print("curr state g", curr_state.g)
-    if (not(prev_state.h - curr_state.h <= curr_state.g)):
-        curr_state.h = prev_state.h - curr_state.g
-        h2 = prev_state.h - curr_state.g
+
     return h2
 
 if __name__ == '__main__':
