@@ -1,5 +1,7 @@
 import eightpuzzle
 import heapq
+import random
+import copy
 from queue import PriorityQueue
 import numpy as np
 import matplotlib.pyplot as plt
@@ -44,20 +46,79 @@ def h2(curr_state, goal_state):
     curr_state.h = h2
 
     return h2
+    
+def find_loc(curr_state, val):
 
+    for i in range(0,3):
+        for j in range(0,3):
+            if(curr_state.state[i][j] == val):
+                return (i,j)
+    
+    
+def misplaced_tiles(curr_state, goal_state):
+    misplaced_tiles = []
+    
+    for i in range(0,3):
+        for j in range(0,3):
+            if(not(curr_state.state[i][j] == goal_state.state[i][j]) and not(curr_state.state[i][j] == 0)):
+                misplaced_tiles.append((i,j))
+                
+    return misplaced_tiles
+
+#Implementing Relaxed Adjacency
+def h3(curr_state, goal_state):
+    curr_cpy = copy.deepcopy(curr_state)
+    misplaced = misplaced_tiles(curr_cpy, goal_state)
+        
+    h3 = 0
+    
+    while(len(misplaced) > 0):
+        
+        loc_0 = find_loc(curr_cpy, 0)
+        goal_0 = goal_positions(0)
+        
+        if(loc_0  == goal_0):
+            x = 0
+            x_loc = loc_0
+            
+            y_loc = misplaced[0]
+            y = curr_cpy.state[y_loc[0]][y_loc[1]]
+                        
+            curr_cpy.state[x_loc[0]][x_loc[1]] = y
+            curr_cpy.state[y_loc[0]][y_loc[1]] = x
+        
+        else:
+            x = 0
+            x_loc = loc_0
+                        
+            y = goal_state.state[x_loc[0]][x_loc[1]]
+            y_loc = find_loc(curr_cpy, y)
+            
+            curr_cpy.state[x_loc[0]][x_loc[1]] = y
+            curr_cpy.state[y_loc[0]][y_loc[1]] = x
+            
+        misplaced = misplaced_tiles(curr_cpy, goal_state)
+        h3 += 1
+    
+    return h3
+            
+        
 if __name__ == '__main__':
     h1_nodes = []
     h2_nodes = []
+    h3_nodes = []
     h1_depth = []
     h2_depth = []
+    h3_depth = []
     h1_branching = []
     h2_branching = []
+    h3_branching = []
     for x in range(NUMBER_OF_TRIALS):
         puzzle = eightpuzzle.EightPuzzle()
         initState = eightpuzzle.initTiles(puzzle)
         # print(initState.state)
         #Running a_star with both h1 and h2
-        heuristics = [h1, h2]
+        heuristics = [h1, h2, h3]
 
         h = 0
         for heuristic in heuristics:
@@ -127,28 +188,35 @@ if __name__ == '__main__':
                         h1_branching.append(nodes_visited / next_node.g)
                     else:
                         h1_branching.append(0)
-                else:
+                if h == 2:
                     h2_nodes.append(nodes_visited)
                     h2_depth.append(next_node.g)
                     if next_node.g != 0:
                         h2_branching.append(nodes_visited / next_node.g)
                     else:
                         h2_branching.append(0)
+                if h == 3:
+                    h3_nodes.append(nodes_visited)
+                    h3_depth.append(next_node.g)
+                    if next_node.g != 0:
+                        h3_branching.append(nodes_visited / next_node.g)
+                    else:
+                        h3_branching.append(0)
+                
                 # print("Depth: ", next_node.g)
                 # print("-----------------")
 
+    print(len(h1_branching), len(h1_depth), len(h1_nodes), len(h2_branching), len(h2_depth), len(h2_nodes), len(h3_branching), len(h3_depth), len(h3_nodes))
+    df = pandas.DataFrame(data={"h1 branching factor" : h1_branching, "h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 branching factor" : h2_branching, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes, "h3 branching factor" : h3_branching, "h3 depth": h3_depth, "h3 nodes visited": h3_nodes})
+    df.to_csv("./3_heuristics.csv", sep=',',index=False)
 
-    df = pandas.DataFrame(data={"h1 branching factor" : h1_branching, "h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 branching factor" : h2_branching, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes})
-    df.to_csv("./fixed_heuristics.csv", sep=',',index=False)
-    
 #    goal = eightpuzzle.EightPuzzle()
 #
 #    puzzle = eightpuzzle.EightPuzzle()
-#    puzzle.state = [[7,2,4],[5,0,6],[8,3,1]]
-#    h1 = h1(puzzle, goal)
-#    h2 = h2(puzzle, goal)
-#    print(h1, h2)
+#    puzzle.state = [[2,7,0],[5,4,3],[8,1,6]]
+#    h3 = h3(puzzle, goal)
+#    print(h3)
 
-    # plt.plot(h1_depth, h1_nodes, 'r^', h2_depth, h2_nodes, 'bs')
-    # plt.show()
+#     plt.plot(h1_depth, h1_nodes, 'r^', h2_depth, h2_nodes, 'bs')
+#     plt.show()
 
