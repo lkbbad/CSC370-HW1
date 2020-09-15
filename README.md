@@ -11,6 +11,7 @@ To run code:
 python3 a_star.py
 ```
 
-Exports CSV titled "3_heuristics.csv" containing nodes generated and effective branching factor data for three heuristic functions.
+Exports CSV titled "3_heuristics.csv" containing nodes generated at each solution depth for three heuristic functions.
 
+A CSV titled "EBF_vals.csv" contains the effective branching factor values we found graphically for the file above.
 
