@@ -182,7 +182,7 @@ if __name__ == '__main__':
                     else:
                         h3_branching.append(0)
 
-    print(len(h1_branching), len(h1_depth), len(h1_nodes), len(h2_branching), len(h2_depth), len(h2_nodes), len(h3_branching), len(h3_depth), len(h3_nodes))
+    #print(len(h1_branching), len(h1_depth), len(h1_nodes), len(h2_branching), len(h2_depth), len(h2_nodes), len(h3_branching), len(h3_depth), len(h3_nodes))
     df = pandas.DataFrame(data={"h1 branching factor" : h1_branching, "h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 branching factor" : h2_branching, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes, "h3 branching factor" : h3_branching, "h3 depth": h3_depth, "h3 nodes visited": h3_nodes})
     df.to_csv("./3_heuristics.csv", sep=',',index=False)
 
