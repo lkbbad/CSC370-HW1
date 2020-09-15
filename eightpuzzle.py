@@ -1,14 +1,14 @@
+'''
+Class creates sliding 8 puzzle with initial state formed by reverse walking
+legal slides from a valid arrangement.
+Authors: Caroline Sigl and Lindy Bustabad
+'''
 import sys
 import copy
 import math
 import random
 
-
 RANDOMIZATION_NUMBER = 50
-'''
-Class creates sliding 8 puzzle with initial state formed by reverse walking
-legal slides from a valid arrangement.
-'''
 class EightPuzzle():
     def __init__(self):
         self.state = [[0, 1, 2], [3, 4, 5], [6, 7, 8]] # legal arrangement to begin reversing
@@ -89,20 +89,12 @@ Function that uses a randomized number of iterations to return the initial
 state of the 8 puzzle based on legal moves from the neighbors list.
 '''
 def initTiles(puzzle):
-    # print("Starting State: ")
-    # print(puzzle)
     iterations = random.randint(0, RANDOMIZATION_NUMBER)
-    # print("Number of Iterations: " + str(iterations))
-    
     for itr in range(iterations):
         moves = puzzle.neighbors()
         rand_index = random.randint(0, len(moves)-1)
         rand_move = moves[rand_index][0]
-        # print(rand_move)
-    
         puzzle.state = rand_move.state
-    # print("Randomly Generated State: ")
-    # print(puzzle)
     return puzzle
 
 if __name__ == '__main__':
