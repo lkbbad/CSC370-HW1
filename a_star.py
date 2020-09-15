@@ -110,9 +110,6 @@ if __name__ == '__main__':
     h1_depth = []
     h2_depth = []
     h3_depth = []
-    h1_branching = []
-    h2_branching = []
-    h3_branching = []
     for x in range(NUMBER_OF_TRIALS):
         puzzle = eightpuzzle.EightPuzzle()
         initState = eightpuzzle.initTiles(puzzle)
@@ -163,27 +160,15 @@ if __name__ == '__main__':
                 if h == 1:
                     h1_nodes.append(nodes_visited)
                     h1_depth.append(next_node.g)
-                    if next_node.g != 0:
-                        h1_branching.append(nodes_visited / next_node.g)
-                    else:
-                        h1_branching.append(0)
                 if h == 2:
                     h2_nodes.append(nodes_visited)
                     h2_depth.append(next_node.g)
-                    if next_node.g != 0:
-                        h2_branching.append(nodes_visited / next_node.g)
-                    else:
-                        h2_branching.append(0)
                 if h == 3:
                     h3_nodes.append(nodes_visited)
                     h3_depth.append(next_node.g)
-                    if next_node.g != 0:
-                        h3_branching.append(nodes_visited / next_node.g)
-                    else:
-                        h3_branching.append(0)
-
-    #print(len(h1_branching), len(h1_depth), len(h1_nodes), len(h2_branching), len(h2_depth), len(h2_nodes), len(h3_branching), len(h3_depth), len(h3_nodes))
-    df = pandas.DataFrame(data={"h1 branching factor" : h1_branching, "h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 branching factor" : h2_branching, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes, "h3 branching factor" : h3_branching, "h3 depth": h3_depth, "h3 nodes visited": h3_nodes})
+                    
+                    
+    df = pandas.DataFrame(data={"h1 depth": h1_depth, "h1 nodes visited": h1_nodes, "h2 depth": h2_depth, "h2 nodes visited": h2_nodes, "h3 depth": h3_depth, "h3 nodes visited": h3_nodes})
     df.to_csv("./3_heuristics.csv", sep=',',index=False)
 
 
