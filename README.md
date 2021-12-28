@@ -1,6 +1,6 @@
 # CSC370-HW1
 
-Authors: Caroline Sigl and Lindy Bustabad, CSC370
+Authors: Caroline Sigl and Lindy Bustabad
 
 Contains eightpuzzle.py class that creates sliding 8-puzzle with initial state formed by reverse walking legal slides from a valid arrangement. RANDOMIZATION_NUMBER global variable: determines maximum number of reverse-walks to take from goal state to reach initial state.
 
